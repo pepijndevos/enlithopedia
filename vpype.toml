@@ -1,0 +1,66 @@
+[gwrite.pybricks]
+scale_x = 125 # 360/(22*math.pi)*24
+scale_y = 92 # 360/(30*math.pi)*24
+vertical_flip = true
+document_start = """
+from pybricks.pupdevices import Motor
+from pybricks.parameters import Port, Stop
+from pybricks.tools import wait
+import umath
+
+pen = Motor(Port.C)
+carriage = Motor(Port.A)
+wheel1 = Motor(Port.B)
+wheel2 = Motor(Port.E)
+
+carriage.reset_angle(0)
+wheel1.reset_angle(0)
+wheel2.reset_angle(0)
+
+is_down = False
+def down():
+    global is_down
+    is_down = True
+    pen.run_target(1000, -180)
+
+def up():
+    global is_down
+    is_down = False
+    pen.run_target(1000, 0)
+
+curx = 0
+cury = 0
+curxc = 0
+curyc = 0
+xcomp = 90
+ycomp = 90
+def move(x, y):
+    global curx, cury, curxc, curyc
+    dx = (x-curx)
+    dy = (y-cury)
+    dist = umath.sqrt(dx**2+dy**2)
+    xc = umath.copysign(xcomp, dx)*(0.5+0.5*is_down)
+    yc = umath.copysign(ycomp, dy)*(0.5+0.5*is_down)
+    cdist = umath.sqrt((xc-curxc)**2+(yc-curyc)**2)
+    curxc = xc
+    curyc = yc
+    # 1000 degree per second, in 10ms steps (100 steps per second)
+    steps = dist//10
+    for i in range(steps):
+        theta = i/(steps+1)
+        xm = curx*(1-theta)+x*theta+xc
+        ym = cury*(1-theta)+y*theta+yc
+        carriage.track_target(xm)
+        wheel1.track_target(ym)
+        wheel2.track_target(ym)
+        if i==0:
+            wait(cdist)
+        wait(20)
+    curx = x
+    cury = y
+
+"""
+document_end = "move(0, 0)"
+segment_first = "move({x:.0f},{y:.0f})\ndown()\n"
+segment = 	"move({x:.0f},{y:.0f})\n"
+segment_last = 	"move({x:.0f},{y:.0f})\nup()\n"

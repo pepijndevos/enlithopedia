@@ -1,0 +1,3 @@
+vpype[all]
+vpype-gcode
+pybricksdev
