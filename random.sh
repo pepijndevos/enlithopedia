@@ -24,8 +24,9 @@ RANDOM_PAGE_TEXT=$(curl -s "$CONTENT_API_URL?$PARAMS" | jq -r '.query.pages[].ex
 echo "Random Wikipedia Page Text:"
 echo "$RANDOM_PAGE_TEXT" | tee random.txt
 
-[ ${#RANDOM_PAGE_TEXT} -gt 10 ] && break
+[ ${#RANDOM_PAGE_TEXT} -gt 500 ] && break
 done
 
 
-vpype --config vpype.toml pagesize a5 text --position 1cm 1cm --wrap 10cm --font cursive --size 32pt --justify "$RANDOM_PAGE_TEXT" linemerge show gwrite --profile pybricks random.py
+#vpype --config vpype.toml pagesize a5 text --position 1cm 1cm --wrap 10cm --font cursive --size 32pt --justify "$RANDOM_PAGE_TEXT" linemerge show gwrite --profile pybricks random.py
+vpype --config vpype.toml pagesize a5 text --position 1cm 1cm --wrap 12.5cm --size 22pt --hyphenate en --justify "$RANDOM_PAGE_TEXT" linemerge show gwrite --profile cnc random.gcode
