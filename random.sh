@@ -22,10 +22,10 @@ PARAMS="action=query&format=json&prop=extracts&exintro=true&explaintext=true&tit
 RANDOM_PAGE_TEXT=$(curl -s "$CONTENT_API_URL?$PARAMS" | jq -r '.query.pages[].extract')
 
 echo "Random Wikipedia Page Text:"
-echo "$RANDOM_PAGE_TEXT"
+echo "$RANDOM_PAGE_TEXT" | tee random.txt
 
-[ ${#RANDOM_PAGE_TEXT} -gt 1000 ] && break
+[ ${#RANDOM_PAGE_TEXT} -gt 10 ] && break
 done
 
 
-vpype --config vpype.toml pagesize a5 text --position 1cm 1cm --wrap 12cm --font cursive --size 20 --justify "$RANDOM_PAGE_TEXT" linemerge show gwrite --profile pybricks random.py
+vpype --config vpype.toml pagesize a5 text --position 1cm 1cm --wrap 10cm --font cursive --size 32pt --justify "$RANDOM_PAGE_TEXT" linemerge show gwrite --profile pybricks random.py

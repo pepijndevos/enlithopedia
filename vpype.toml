@@ -32,20 +32,20 @@ curx = 0
 cury = 0
 curxc = 0
 curyc = 0
-xcomp = 90
+xcomp = 120
 ycomp = 90
 def move(x, y):
     global curx, cury, curxc, curyc
     dx = (x-curx)
     dy = (y-cury)
     dist = umath.sqrt(dx**2+dy**2)
-    xc = umath.copysign(xcomp, dx)*(0.5+0.5*is_down)
-    yc = umath.copysign(ycomp, dy)*(0.5+0.5*is_down)
+    xc = umath.copysign(xcomp, dx)
+    yc = umath.copysign(ycomp, dy)
     cdist = umath.sqrt((xc-curxc)**2+(yc-curyc)**2)
     curxc = xc
     curyc = yc
-    # 1000 degree per second, in 10ms steps (100 steps per second)
-    steps = dist//10
+    # 500 degree per second, in 20ms steps (50 steps per second)
+    steps = umath.ceil(dist/10)
     for i in range(steps):
         theta = i/(steps+1)
         xm = curx*(1-theta)+x*theta+xc
@@ -59,8 +59,24 @@ def move(x, y):
     curx = x
     cury = y
 
+def move_fast(x, y):
+    global curx, cury, curxc, curyc
+    dx = (x-curx)
+    dy = (y-cury)
+    xc = umath.copysign(xcomp//4, dx)
+    yc = umath.copysign(ycomp//4, dy)
+    carriage.track_target(x+xc)
+    wheel1.track_target(y+yc)
+    wheel2.track_target(y+yc)
+    curxc = 0
+    curyc = 0
+    curx = x
+    cury = y
+    while not carriage.done() or not wheel1.done() or not wheel2.done():
+        wait(10)
+
 """
-document_end = "move(0, 0)"
-segment_first = "move({x:.0f},{y:.0f})\ndown()\n"
+document_end = "move_fast(0, 0)"
+segment_first = "move_fast({x:.0f},{y:.0f})\ndown()\n"
 segment = 	"move({x:.0f},{y:.0f})\n"
 segment_last = 	"move({x:.0f},{y:.0f})\nup()\n"
