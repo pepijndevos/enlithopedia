@@ -7,7 +7,7 @@ unit = "mm"
 vertical_flip = true
 
 [gwrite.pybricks]
-scale_x = 125 # 360/(22*math.pi)*24
+scale_x = 112 # 360/(22*math.pi)*24
 scale_y = 92 # 360/(30*math.pi)*24
 vertical_flip = true
 document_start = """
@@ -16,9 +16,9 @@ from pybricks.parameters import Port, Stop
 from pybricks.tools import wait
 import umath
 
-pen = Motor(Port.C)
-carriage = Motor(Port.A)
-wheel1 = Motor(Port.B)
+pen = Motor(Port.B)
+carriage = Motor(Port.F)
+wheel1 = Motor(Port.A)
 wheel2 = Motor(Port.E)
 
 carriage.reset_angle(0)
@@ -29,19 +29,19 @@ is_down = False
 def down():
     global is_down
     is_down = True
-    pen.run_target(1000, -180)
+    pen.run_until_stalled(-100, duty_limit=30)
 
 def up():
     global is_down
     is_down = False
-    pen.run_target(1000, 0)
+    pen.run_until_stalled(100, Stop.HOLD)
 
 curx = 0
 cury = 0
 curxc = 0
 curyc = 0
-xcomp = 120
-ycomp = 90
+xcomp = 60
+ycomp = 60
 def move(x, y):
     global curx, cury, curxc, curyc
     dx = (x-curx)
