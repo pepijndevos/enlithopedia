@@ -1,8 +1,8 @@
 [gwrite.cnc]
 document_start = "G90 F1000\nG21 (unit is mm)\nG17 (work in XY plane)\n"
-segment_first =  "G00 Z1 (pen up)\nG00 X{x:.4f} Y{y:.4f} (travel)\nG00 Z-1 (pen down)\n"
+segment_first =  "G00 Z1 (pen up)\nG00 X{x:.4f} Y{y:.4f} (travel)\nG00 Z-0.5 (pen down)\n"
 segment = "G01 X{x:.4f} Y{y:.4f} (draw)\n"
-document_end = "G00 Z5 (pen up)\nG00 X0 Y0 (travel)\nM2 (end)\n"
+document_end = "G00 Z20 (pen up)\nG00 X0 Y0 (travel)\nM2 (end)\n"
 unit = "mm"
 vertical_flip = true
 
