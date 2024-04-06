@@ -47,6 +47,6 @@ sed -i 's/{{lang|[^|]*|\([^}]*\)}}/\1/g' "$SAFE_TITLE.txt"
 sed -i 's/{{transl|[^|]*|\([^}]*\)}}/\1/g' "$SAFE_TITLE.txt" 
 sed -i 's/{{gloss|\([^}]*\)}}/\1/g' "$SAFE_TITLE.txt"
 
-pandoc --from mediawiki --to latex -s -V papersize=a5 -V geometry:margin=1cm -V mainfont="Liberation Serif" -V lang=$WIKILANG "$SAFE_TITLE.txt" -o "$SAFE_TITLE.tex"
+pandoc --from mediawiki --to latex -s -V papersize=a5 -V geometry:margin=1cm -V mainfont="Liberation Serif" -V documentclass=scrartcl -V fontsize="fontsize=18pt" -V lang=$WIKILANG "$SAFE_TITLE.txt" -o "$SAFE_TITLE.tex"
 lualatex --interaction=nonstopmode "$SAFE_TITLE.tex"
 inkscape "$SAFE_TITLE.pdf" --pdf-poppler --export-page=1 --export-type="dxf" --export-extension=org.ekips.output.dxf_outlines
